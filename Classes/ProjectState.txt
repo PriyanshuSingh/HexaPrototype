@@ -1,0 +1,32 @@
+TODO:
+get gameplay as much sorted as possible
+
+
+
+Difficulty Parameters:
+1.Player Moving Speed
+2.Player Rotation  Speed
+3.Player Bounding Box for Collision Detection
+4.Random Path Generator Probabilities and Distribution
+
+Proposed Classes:
+Hexagon Globals
+
+
+Design:
+Decide Color Theme for game
+Nice Music in Background
+Updating App with New Galaxies or Shapes to keep the app on the phone
+Jaw Dropping Backgrounds
+Decide features and implement initial Design
+Decide Business Model(AD model,purchase option)
+Social Media Promotion for the app
+Decide Application Flow Diagram
+
+
+Issues:
+Tune Collision Detection and Input Controls
+Hexagon Drawing needs to be faster move to texture based approach
+See using update directly better(hiccups in between noticable)
+Solutions(Proposed)
+Use ExtraPolation maybe between two frames?
