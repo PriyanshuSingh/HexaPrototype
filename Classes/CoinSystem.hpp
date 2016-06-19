@@ -12,6 +12,10 @@ class Coin;
 class CoinSystem: public cocos2d::Node {
 
 public:
+    void setMagnet(bool isMagnet) {
+        this->isMagnet = isMagnet;
+    }
+
     int getScore() const {
         return score;
     }
@@ -27,6 +31,13 @@ protected:
     virtual bool init() override;
     std::vector<Coin *> coins;
     int score;
+
+private:
+    struct CoinSystemSettings{
+        const float magnetRadius = 50.0f;
+    };
+    bool isMagnet;
+    CoinSystemSettings settings;
 };
 
 

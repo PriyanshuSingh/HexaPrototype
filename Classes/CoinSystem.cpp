@@ -9,13 +9,22 @@ USING_NS_CC;
 bool CoinSystem::init() {
     if(!Node::init())return false;
     score = 0;
+    isMagnet = true;
     return true;
 }
 
 void CoinSystem::update(const Player *player, float delta) {
     Node::update(delta);
     auto pts = player->getCollisionRect();
-
+    if(isMagnet){
+        for(auto coin: coins){
+            if(coin->getPosition().distance(player->getPosition()) < settings.magnetRadius){
+                float multi = settings.magnetRadius / (coin->getPosition().distance(player->getPosition()) + 1);
+                Point pt = (player->getPosition() - coin->getPosition()); pt.normalize();
+                coin->setPosition(coin->getPosition() + pt * multi);
+            }
+        }
+    }
     for(auto coin : coins){
         if(coin->isVisible() && coin->collided(pts)){
             coin->setVisible(false);
