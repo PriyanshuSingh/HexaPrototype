@@ -56,8 +56,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // Set the design resolution
     glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::SHOW_ALL);
 
-    cocos2d::log("design policy is %d",glview->getResolutionPolicy() == ResolutionPolicy::SHOW_ALL);
-
 
 
     Size frameSize = glview->getFrameSize();

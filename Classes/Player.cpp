@@ -53,19 +53,56 @@ bool Player::init() {
             return true;
         };
 
-        listener->onKeyReleased = [this](EventKeyboard::KeyCode keyCode, Event *event) -> bool{
+        listener->onKeyReleased = [this](EventKeyboard::KeyCode keyCode, Event *event){
             if (keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW) {
                 orientation = Movement::Normal;
             }
             else if(keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW){
                 orientation = Movement::Normal;
             }
-            return true;
+
         };
 
         _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
     }
 #endif
+
+
+
+    for( int i = 0;i< Power::TotalPowerUps;++i){
+        powerBool[i] = false;
+    }
+    //TODO remove me
+    //for testing boost and slow
+    {
+        auto testListener = EventListenerKeyboard::create();
+        testListener->onKeyPressed = [this](EventKeyboard::KeyCode keyCode,Event * event){
+            if (keyCode == EventKeyboard::KeyCode::KEY_W) {
+                enablePowerUp(SpeedFast);
+
+            }
+            else if(keyCode == EventKeyboard::KeyCode::KEY_D){
+                enablePowerUp(SpeedSlow);
+
+            }
+        };
+        testListener->onKeyReleased = [this](EventKeyboard::KeyCode keyCode,Event * event){
+            if (keyCode == EventKeyboard::KeyCode::KEY_W) {
+                disablePowerUp(SpeedFast);
+            }
+            else if(keyCode == EventKeyboard::KeyCode::KEY_D){
+                disablePowerUp(SpeedSlow);
+
+            }
+        };
+
+        _eventDispatcher->addEventListenerWithSceneGraphPriority(testListener, this);
+    }
+
+
+
+
+
 
 
     displaySprite = Sprite::create("Triangle.png");
@@ -78,8 +115,8 @@ bool Player::init() {
 void Player::update(float delta) {
 
 
-    tilt();
-    move();
+    tilt(delta);
+    move(delta);
 
 
 
@@ -103,7 +140,7 @@ void Player::setNextPosition(const cocos2d::Vec2 &nextPosition) {
     this->nextPosition = nextPosition;
 }
 
-void Player::tilt() {
+void Player::tilt(float dt) {
 
     switch( orientation ) {
         case Movement::Right:
@@ -120,9 +157,26 @@ void Player::tilt() {
 }
 
 
-void Player::move() {
+void Player::move(float dt) {
     float currentAngle = CC_DEGREES_TO_RADIANS(-1*getRotation()+90);
     disVec = settings.displacementDelta*Vec2(cosf(currentAngle),sinf(currentAngle));
+    for(int i = 0;i<TotalPowerUps;++i) {
+       if(powerBool[i]) {
+           switch (i){
+           case Power::SpeedFast:
+               if(powerBool[i])
+                   disVec *= sf.getFactor(dt);
+                break;
+           case Power::SpeedSlow:
+               disVec *= ss.factor;
+               break;
+           case Power::None:
+               break;
+
+           }
+
+        }
+    }
     this->setNextPosition(getPosition()+disVec);
 
 }
@@ -133,6 +187,27 @@ Vec2  Player::getDisplacement() const{
 
 
 
+void Player::enablePowerUp(const Player::Power &power) {
+    CCASSERT(!powerBool[power],"power up is already enabled");
+    powerBool[power] = true;
+    switch(power){
+        case Power::SpeedFast:
+            sf = speedFast();
+            break;
+        case Power::SpeedSlow:
+            ss = speedSlow();
+            break;
+    }
 
+
+
+}
+
+void Player::disablePowerUp(const Player::Power &power) {
+    CCASSERT(powerBool[power],"power up not enabled");
+    powerBool[power] = false;
+
+
+}
 
 

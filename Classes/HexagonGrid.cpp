@@ -144,7 +144,6 @@ void HexagonGrid::Restart() {
     }
 
     {
-
         backGround->setPosition(Vec2::ZERO);
 
     }

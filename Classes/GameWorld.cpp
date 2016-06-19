@@ -67,9 +67,11 @@ bool GameWorld::init()
     //closing button
     {
         auto closeItem = MenuItemImage::create("CloseNormal.png", "CloseSelected.png",CC_CALLBACK_1(GameWorld::menuCloseCallback, this));
-        closeItem->setPosition(Vec2(visibleSize.width - closeItem->getContentSize().width / 2,
-                                    closeItem->getContentSize().height / 2));
-        auto menu = Menu::create(closeItem, nullptr);
+
+        closeItem->setPosition(Vec2(visibleOrigin.x+visibleSize.width - closeItem->getContentSize().width / 2,
+                                    visibleOrigin.y+closeItem->getContentSize().height / 2));
+        auto menu = Menu::createWithItem(closeItem);
+        menu->setPosition(Vec2::ZERO);
         this->addChild(menu, 1);
     }
 

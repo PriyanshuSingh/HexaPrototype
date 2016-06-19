@@ -27,8 +27,8 @@ public:
         Vec4 topLeft = getNodeToParentTransform()*Vec4(-size.width/2, size.height/2,0,1);
         Vec4 topRight= getNodeToParentTransform()*Vec4(size.width/2, size.height/2,0,1);
         Vec4 bottomRight = getNodeToParentTransform()*Vec4(size.width/2, -size.height/2,0,1);
-
         Vec4 bottomLeft = getNodeToParentTransform()*Vec4(-size.width/2,-size.height/2,0,1);
+
         points.push_back(Vec2(topLeft.x,topLeft.y));
         points.push_back(Vec2(topRight.x,topRight.y));
         points.push_back(Vec2(bottomRight.x,bottomRight.y));
@@ -59,8 +59,8 @@ private:
     };
     PlayerSettings settings;
 
-    void tilt();
-    void move();
+    void tilt(float dt);
+    void move(float dt);
 
     enum class Movement{
         Normal,
@@ -72,6 +72,48 @@ private:
 
 
     cocos2d::Vec2 disVec;
+
+
+
+    //powerups
+    enum Power{
+        SpeedFast,
+        SpeedSlow,
+        None,
+        TotalPowerUps,
+
+    };
+
+    struct speedFast{
+        float getFactor(float delta){
+            const float half = time/2;
+            float factor = elapsed <= half?elapsed:(time-elapsed);
+            elapsed+=delta;
+
+            factor/=time;
+            factor*=2;
+            return exp(factor);
+
+        }
+        float time = 0.4f;
+        private:
+            float elapsed = 0.0f;
+
+    };
+    speedFast sf;
+
+    struct speedSlow{
+        float factor = 0.5f;
+    };
+    speedSlow ss;
+
+
+    void enablePowerUp(const Power & power);
+    void disablePowerUp(const Power & power);
+    bool powerBool[TotalPowerUps];
+
+
+
 };
 
 

@@ -21,6 +21,7 @@ Decide features and implement initial Design
 Decide Business Model(AD model,purchase option)
 Social Media Promotion for the app
 Decide Application Flow Diagram
+Abstract GameWorld
 
 
 Issues:
@@ -28,8 +29,14 @@ Tune Collision Detection and Input Controls
 Hexagon Drawing needs to be faster move to texture based approach
 See using update directly better(hiccups in between noticable)
 Solutions(Proposed)
+<<<<<<< Updated upstream
 Use ExtraPolation maybe between two frames?
 
 
 Release:
 Invert Controls
+=======
+Use Extrapolation maybe between two frames?
+
+
+>>>>>>> Stashed changes
