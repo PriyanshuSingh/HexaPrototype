@@ -127,7 +127,7 @@ void Player::move() {
 
 }
 
-Vec2  Player::getDisplacement() {
+Vec2  Player::getDisplacement() const{
     return disVec;
 }
 

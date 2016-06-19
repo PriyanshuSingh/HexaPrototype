@@ -1,5 +1,6 @@
 #include "GameWorld.hpp"
 #include "HexagonGrid.hpp"
+#include "CoinSystem.hpp"
 
 USING_NS_CC;
 
@@ -49,14 +50,20 @@ bool GameWorld::init()
 
     // position the sprite on the center of the screen
 
-
+//    //BAD HACK COIN
+//    coinSystem = CoinSystem::create();
+//    addChild(coinSystem);
 
     grid = HexagonGrid::create(this,180,20,30);
     addChild(grid);
 //    grid->setPosition(winSize/3);
-
-
-
+    //score Label
+    {
+        scoreLabel = Label::createWithTTF("0","fonts/arial.ttf", 20);
+//        scoreLabel->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+        scoreLabel->setPosition(Vec2(winSize.width, winSize.height) + visibleOrigin - Vec2(60, 60));
+        addChild(scoreLabel, 2);
+    }
     //closing button
     {
         auto closeItem = MenuItemImage::create("CloseNormal.png", "CloseSelected.png",CC_CALLBACK_1(GameWorld::menuCloseCallback, this));
@@ -158,9 +165,8 @@ void GameWorld::update(float delta) {
 
 void GameWorld::updateConst(float delta) {
 
-
     grid->update(delta);
-
+    scoreLabel->setString(std::to_string(grid->coinSystem->getScore()));
 }
 
 

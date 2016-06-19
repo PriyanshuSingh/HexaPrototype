@@ -3,12 +3,17 @@
 
 #include "cocos2d.h"
 #include "Player.hpp"
+#include "CoinSystem.hpp"
 
 
 class HexagonGrid;
 class GameWorld : public cocos2d::Layer
 {
 public:
+    void setPlayer(Player *player) {
+        GameWorld::player = player;
+    }
+
     static cocos2d::Scene* createScene();
 
     bool init()override;
@@ -20,7 +25,8 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(GameWorld);
-
+//    CoinSystem *coinSystem;
+    cocos2d::Label *scoreLabel;
 
 private:
     Player * player = nullptr;

@@ -2,7 +2,6 @@ TODO:
 get gameplay as much sorted as possible
 
 
-
 Difficulty Parameters:
 1.Player Moving Speed
 2.Player Rotation  Speed
@@ -30,3 +29,7 @@ Hexagon Drawing needs to be faster move to texture based approach
 See using update directly better(hiccups in between noticable)
 Solutions(Proposed)
 Use ExtraPolation maybe between two frames?
+
+
+Release:
+Invert Controls

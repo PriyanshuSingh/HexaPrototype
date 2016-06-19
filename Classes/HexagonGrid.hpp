@@ -6,6 +6,7 @@
 #define MYGAME_HEXAGONGRID_HPP
 
 #include "cocos2d.h"
+#include "CoinSystem.hpp"
 
 class Player;
 class GameWorld;
@@ -17,6 +18,7 @@ public:
 
     void update(float delta) override;
 
+    CoinSystem* coinSystem;
 protected:
     bool init(GameWorld * world,float hexaWidth);
 

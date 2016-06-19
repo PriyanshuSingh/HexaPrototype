@@ -18,7 +18,7 @@ public:
 
 
 
-    std::vector<cocos2d::Vec2> getCollisionRect(){
+    std::vector<cocos2d::Vec2> getCollisionRect() const{
         using cocos2d::Vec4;
         using cocos2d::Vec2;
         std::vector<Vec2> points;
@@ -39,7 +39,7 @@ public:
     }
 
 
-    cocos2d::Vec2  getDisplacement();
+    cocos2d::Vec2  getDisplacement() const;
 
     void setCollided(bool val);
 

@@ -77,17 +77,23 @@ bool HexagonGrid::init(GameWorld * world,float hexaWidth) {
 
         }
     }
-
-
-    indices = generatePath(startIndex.second,startIndex.first,pathLength);
-
+    // CoinSystem
+    {
+        coinSystem = CoinSystem::create();
+        addChild(coinSystem);
+    }
     //player
     {
         player = Player::create();
         player->setPosition(hexagons[startIndex.first][startIndex.second].center);
         addChild(player);
         current = startIndex;
+        world->setPlayer(player);
     }
+    // generatePath add coins on the field so it should be below CoinSystem;
+    indices = generatePath(startIndex.second,startIndex.first,pathLength);
+
+
 
 
     return true;
@@ -101,11 +107,14 @@ void HexagonGrid::Restart() {
 //    cocos2d::log("unscheduled");
     //reset stuff here
 
-
+    coinSystem->clearCoins();
     this->scheduleOnce([this](float delta){
         world->scheduleUpdate();
 //        cocos2d::log("rescheduled");
     },2.0f,"GameResumer");
+
+
+    setPosition(Vec2::ZERO);
 
 
     //player and stuff reset
@@ -232,7 +241,7 @@ void HexagonGrid::update(float delta) {
     }
     //moves player
     player->update(delta);
-
+    coinSystem->update(player, delta);
 
     setPosition(getPosition() - player->getDisplacement());
     backGround->setPosition(backGround->getPosition()+paraFactor*player->getDisplacement());
@@ -323,6 +332,10 @@ std::vector<std::pair<int,int> > HexagonGrid::generatePath(size_t startX,size_t 
 
         hexagons[currentY][currentX].exitEdge = static_cast<Hex::FreeEdge>(dir);
 //        cocos2d::log("the %d %d guy exit edge is %d",currentY,currentX,dir);
+
+
+        //ADDING COINS TO THE CENTER
+        coinSystem->addCoin(hexagons[hold.first][hold.second].center);
 
         hexagons[hold.first][hold.second].enterEdge = static_cast<Hex::FreeEdge>(mapper(hexagons[currentY][currentX].exitEdge));
         currentX = hold.second;
@@ -448,9 +461,7 @@ bool HexagonGrid::collision() {
 const HexagonGrid::Hex & HexagonGrid::getNextHexagon(const Hex & currentHexagon, int dir) {
     auto nextIndex = getNextIndex(currentHexagon.index,dir);
     return hexagons[nextIndex.first][nextIndex.second];
-
 }
-
 
 
 
