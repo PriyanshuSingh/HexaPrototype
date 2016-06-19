@@ -202,8 +202,6 @@ void Player::enablePowerUp(const Player::Power &power) {
             break;
     }
 
-
-
 }
 
 void Player::disablePowerUp(const Player::Power &power) {

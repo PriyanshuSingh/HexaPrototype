@@ -38,5 +38,16 @@ Invert Controls
 =======
 Use Extrapolation maybe between two frames?
 
-
+Current Goals:
+=============
+1. Fuel system
+2. Supernova explosion: (An arc with increasing radius)
+3. Dynamic hexagons
+    a. rotating edge
+    b. glowing hex (all edges turn on an off simultaneously)
+    c. exit edge gets green after even no. of entering from the previous hexagonal (enter exit enter)
+4. Time based difficulty
+    a. Speed n rotation (increased by a factor)
+    b. Dynamic hex are coming frequently
+5. Make game infinite runner.. (new rows and cols should be added)
 >>>>>>> Stashed changes
