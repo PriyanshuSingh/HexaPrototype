@@ -87,10 +87,8 @@ bool Player::init() {
             }
         };
         testListener->onKeyReleased = [this](EventKeyboard::KeyCode keyCode,Event * event){
-            if (keyCode == EventKeyboard::KeyCode::KEY_W) {
-                disablePowerUp(SpeedFast);
-            }
-            else if(keyCode == EventKeyboard::KeyCode::KEY_D){
+
+            if(keyCode == EventKeyboard::KeyCode::KEY_D){
                 disablePowerUp(SpeedSlow);
 
             }
@@ -164,8 +162,13 @@ void Player::move(float dt) {
        if(powerBool[i]) {
            switch (i){
            case Power::SpeedFast:
-               if(powerBool[i])
+               if(powerBool[i]) {
+
                    disVec *= sf.getFactor(dt);
+                   if(sf.getElapsed() >= sf.time){
+                       powerBool[i] = false;
+                   }
+               }
                 break;
            case Power::SpeedSlow:
                disVec *= ss.factor;

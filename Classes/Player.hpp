@@ -86,14 +86,18 @@ private:
 
     struct speedFast{
         float getFactor(float delta){
+            elapsed+=delta;
+
             const float half = time/2;
             float factor = elapsed <= half?elapsed:(time-elapsed);
-            elapsed+=delta;
 
             factor/=time;
             factor*=2;
             return exp(factor);
 
+        }
+        float getElapsed(){
+            return elapsed;
         }
         float time = 0.4f;
         private:

@@ -127,6 +127,7 @@ set(GAME_SRC
   Classes/GameWorld.cpp
   Classes/Player.cpp
   Classes/HexagonGrid.cpp
+  Classes/CoinSystem.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
 
@@ -135,6 +136,7 @@ set(GAME_HEADERS
   Classes/GameWorld.hpp
   Classes/Player.hpp
   Classes/HexagonGrid.hpp
+  Classes/CoinSystem.hpp
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 
