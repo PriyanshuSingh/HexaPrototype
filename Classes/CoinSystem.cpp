@@ -34,17 +34,21 @@ void CoinSystem::update(const Player *player, float delta) {
 }
 
 void CoinSystem::addCoin(cocos2d::Vec2 point) {
-    Coin *coin = Coin::create("Coin/frame-1.png");
+
+    int i = CCRANDOM_0_1() * 10;if(i==0)i++;
+    Coin *coin = Coin::create("Coin/frame-"+std::to_string(i)+".png");
     coin->setPosition(point);
     coin->setType(Coin::CoinType::SMALL_VALUE_COIN);
     auto animation = Animation::create();
-    for(int i=1; i<=10; i++){
+    for(int k=1; k<=10; k++){
         animation->addSpriteFrameWithFile("Coin/frame-" + std::to_string(i) + ".png");
+        i++;if(i == 11)i=1;
     }
     animation->setLoops(-1);
+    animation->setDelayPerUnit(1.0f/24.0f);
     coin->runAction(Animate::create(animation));
     coin->setVisible(true);
-    coin->setScale(0.05);
+    coin->setScale(0.07);
     coins.push_back(coin);
     addChild(coin);
 }

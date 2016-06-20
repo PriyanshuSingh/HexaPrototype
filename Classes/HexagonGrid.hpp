@@ -131,7 +131,7 @@ private:
 
     void Restart();
     GameWorld * world = nullptr;
-    int pathLength = 15;
+    int pathLength = 80;
     IndexPair startIndex = std::make_pair(2,2);
     bool pathDirty = true;
 };
