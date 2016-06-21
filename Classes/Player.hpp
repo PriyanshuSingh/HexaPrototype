@@ -22,7 +22,7 @@ public:
         using cocos2d::Vec4;
         using cocos2d::Vec2;
         std::vector<Vec2> points;
-        auto size =displaySprite->getTextureRect().size*settings.boxFactor;
+        auto size =displaySprite->getTextureRect().size*settings.boxFactor*displaySprite->getScale();
 
         Vec4 topLeft = getNodeToParentTransform()*Vec4(-size.width/2, size.height/2,0,1);
         Vec4 topRight= getNodeToParentTransform()*Vec4(size.width/2, size.height/2,0,1);

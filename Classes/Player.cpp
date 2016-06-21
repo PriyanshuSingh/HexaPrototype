@@ -103,8 +103,18 @@ bool Player::init() {
 
 
 
-    displaySprite = Sprite::create("Triangle.png");
-    addChild(displaySprite);
+//    displaySprite = Sprite::create("Triangle.png");
+    displaySprite = Sprite::create("AssetSet1/plane/plane0001.png");
+    displaySprite->setScale(0.40f);
+    //setting Animation
+    auto animation = Animation::create();
+    for(int i=1; i<10; i++)animation->addSpriteFrameWithFile("AssetSet1/plane/plane000"+std::to_string(i)+".png");
+    animation->addSpriteFrameWithFile("AssetSet1/plane/plane0010.png");
+    animation->setLoops(-1);
+    animation->setDelayPerUnit(1.0f/18.0f);
+    displaySprite->runAction(Animate::create(animation));
+    //
+    addChild(displaySprite, 100);
     auto filterSprite = Sprite::create("AssetSet1/filter1.png");
     filterSprite->setBlendFunc(BlendFunc::ALPHA_PREMULTIPLIED);
     addChild(filterSprite);
