@@ -5,6 +5,7 @@
 #include "HexagonGrid.hpp"
 #include "Player.hpp"
 #include "GameWorld.hpp"
+#include "LaserNode.hpp"
 
 USING_NS_CC;
 
@@ -93,7 +94,17 @@ bool HexagonGrid::init(GameWorld * world,float hexaWidth) {
     // generatePath add coins on the field so it should be below CoinSystem;
     indices = generatePath(startIndex.second,startIndex.first,pathLength);
 
+    //LaserNode
+    {
+        //TODO speed based on player displacement delta
+        laser = LaserSystem::create(player,[this]{
+            laser = nullptr;
+        },20,2<<6,4.2f);
+        addChild(laser);
 
+
+
+    }
 
 
     return true;
@@ -145,6 +156,14 @@ void HexagonGrid::Restart() {
 
     {
         backGround->setPosition(Vec2::ZERO);
+
+    }
+
+
+
+    {
+        if(laser!= nullptr)
+            laser->setPosition(Vec2::ZERO);
 
     }
     setPosition(Vec2::ZERO);
@@ -227,7 +246,7 @@ void HexagonGrid::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transfo
 void HexagonGrid::update(float delta) {
 
     //checks whether player collides
-    if(collision()){
+    if(collision() || (laser!= nullptr && laser->collided())){
         player->setVisible(false);
         Restart();
         return;
@@ -244,7 +263,9 @@ void HexagonGrid::update(float delta) {
 
     setPosition(getPosition() - player->getDisplacement());
     backGround->setPosition(backGround->getPosition()+paraFactor*player->getDisplacement());
-
+    if(laser!= nullptr){
+        laser->move();
+    }
     player->setPosition(player->getNextPosition());
 
 }
@@ -315,17 +336,12 @@ std::vector<std::pair<int,int> > HexagonGrid::generatePath(size_t startX,size_t 
 
     for(size_t i = 0;i<pathLength-1;++i){
         float randNum = distro(rng);
-
         auto dir = getDirection(randNum,probs);
-
         auto hold = getNextIndex(std::make_pair(currentY,currentX),dir);
         while(mark[hold.first][hold.second]){
             randNum = distro(rng);
             dir = getDirection(randNum,probs);
             hold = getNextIndex(std::make_pair(currentY,currentX),dir);
-
-
-
         }
         mark[hold.first][hold.second] = true;
 
@@ -343,9 +359,8 @@ std::vector<std::pair<int,int> > HexagonGrid::generatePath(size_t startX,size_t 
 
 
     }
+
     hexagons[currentY][currentX].exitEdge = Hex::FreeEdge::Invalid;
-
-
     return indices;
 
 }

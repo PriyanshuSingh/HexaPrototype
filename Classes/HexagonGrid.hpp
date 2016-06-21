@@ -10,16 +10,58 @@
 
 class Player;
 class GameWorld;
+class LaserSystem;
 class HexagonGrid:public cocos2d::Node{
 public:
-    HexagonGrid(size_t width,size_t height);
     static HexagonGrid* create(GameWorld * world,float hexaWidth,size_t width,size_t height);
     void draw(cocos2d::Renderer * renderer, const cocos2d::Mat4 &transform, uint32_t flags) override;
 
     void update(float delta) override;
 
-    CoinSystem* coinSystem;
+    CoinSystem* coinSystem = nullptr;
+
+
+    struct LineSegment{
+        LineSegment(const cocos2d::Vec2 & start,const cocos2d::Vec2 & end):start(start),end(end){}
+        cocos2d::Vec2 start;
+        cocos2d::Vec2 end;
+        int getSign(const cocos2d::Vec2 & point)const{
+            float out = point.x*(end.y-start.y)-point.y*(end.x-start.x)+start.y*(end.x-start.x)-start.x*(end.y-start.y);
+            //TODO see this test
+            if(fabs(out-0) <FLT_EPSILON){
+                return 0;
+            }
+            else if(out > FLT_EPSILON) {
+                return 1;
+
+            }
+            else{
+                return -1;
+
+            }
+        }
+        bool intersects(const LineSegment & other){
+
+            return (getSign(other.start)!=getSign(other.end)) && (other.getSign(start)!=other.getSign(end));
+        }
+        //check if the polygon formed by a bunch of points intersect this line
+        bool intersects(const std::vector<cocos2d::Vec2> & other){
+            std::vector<LineSegment> segments;
+            for(size_t i =0;i<other.size();++i){
+                segments.push_back(LineSegment(other[i],other[(i+1)%other.size()]));
+            }
+            bool ans =  false;
+            for(size_t i =0;i<segments.size();++i){
+                ans = ans || intersects(segments[i]);
+            }
+            return ans;
+        }
+
+
+    };
+
 protected:
+    HexagonGrid(size_t width,size_t height);
     bool init(GameWorld * world,float hexaWidth);
 
 
@@ -84,49 +126,13 @@ private:
     Player * player = nullptr;
 
     bool collision();
-    struct LineSegment{
-        LineSegment(const cocos2d::Vec2 & start,const cocos2d::Vec2 & end):start(start),end(end){}
-        cocos2d::Vec2 start;
-        cocos2d::Vec2 end;
-        int getSign(const cocos2d::Vec2 & point)const{
-            float out = point.x*(end.y-start.y)-point.y*(end.x-start.x)+start.y*(end.x-start.x)-start.x*(end.y-start.y);
-            //TODO see this test
-            if(fabs(out-0) <FLT_EPSILON){
-                return 0;
-            }
-            else if(out > FLT_EPSILON) {
-                return 1;
 
-            }
-            else{
-                return -1;
-
-            }
-        }
-        bool intersects(const LineSegment & other){
-
-            return (getSign(other.start)!=getSign(other.end)) && (other.getSign(start)!=other.getSign(end));
-        }
-        //check if the polygon formed by a bunch of points intersect this line
-        bool intersects(const std::vector<cocos2d::Vec2> & other){
-            std::vector<LineSegment> segments;
-            for(size_t i =0;i<other.size();++i){
-                segments.push_back(LineSegment(other[i],other[(i+1)%other.size()]));
-            }
-            bool ans =  false;
-            for(size_t i =0;i<segments.size();++i){
-                ans = ans || intersects(segments[i]);
-            }
-            return ans;
-        }
-
-
-    };
     IndexPair current;
     const Hex & getNextHexagon(const Hex & currentHexagon, int dir);
 
     bool transferring = false;
     float paraFactor = 0.8;
+
     cocos2d::Sprite *backGround = nullptr;
 
     void Restart();
@@ -134,6 +140,7 @@ private:
     int pathLength = 15;
     IndexPair startIndex = std::make_pair(2,2);
     bool pathDirty = true;
+    LaserSystem *laser = nullptr;
 };
 
 

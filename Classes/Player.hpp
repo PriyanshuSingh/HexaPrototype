@@ -51,7 +51,7 @@ private:
         float rotationDelta = 4;
         //TODO make sure displacement delta is always less than a particular value so no tunelling with player
         float displacementDelta = 4;
-        float maxRotation = 180;
+        float maxRotation = 180*100;
         //can increase or decrease this factor
         float boxFactor = 0.3;
 
