@@ -1,5 +1,7 @@
 #include "GameWorld.hpp"
 #include "HexagonGrid.hpp"
+#include "AndToString.hpp"
+
 USING_NS_CC;
 
 Scene* GameWorld::createScene()
@@ -167,7 +169,7 @@ void GameWorld::update(float delta) {
 void GameWorld::updateConst(float delta) {
 
     grid->update(delta);
-    scoreLabel->setString(std::to_string(grid->coinSystem->getScore()));
+    scoreLabel->setString(TO_STRING(grid->coinSystem->getScore()));
 }
 
 

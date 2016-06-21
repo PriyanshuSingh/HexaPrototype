@@ -140,8 +140,22 @@ private:
     int pathLength = 80;
     IndexPair startIndex = std::make_pair(2,2);
     bool pathDirty = true;
-    LaserSystem *laser = nullptr;
     cocos2d::Sprite *filterMultiply;
+
+
+
+    //laser variables
+    LaserSystem *laser = nullptr;
+
+    float firstOff  = 8.0f;
+    float timeRange = 8.0f;
+
+
+    void laserMaker(float delta);
+    float backOff = 300;
+
+    int laserCount = 0;
+
 };
 
 

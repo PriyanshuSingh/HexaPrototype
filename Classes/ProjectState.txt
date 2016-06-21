@@ -13,6 +13,13 @@ Hexagon Globals
 
 
 Design:
+Game Start
+Torch On You!,Run
+Game Background Tiles Look different enough to look real
+Now since on Kitchen Wall add stuff like sink holes(basically proposed black holes in the original version)
+
+
+
 Decide Color Theme for game
 Nice Music in Background
 Updating App with New Galaxies or Shapes to keep the app on the phone

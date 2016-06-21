@@ -3,7 +3,7 @@
 //
 
 #include "CoinSystem.hpp"
-
+#include "AndToString.hpp"
 USING_NS_CC;
 
 bool CoinSystem::init() {
@@ -36,12 +36,12 @@ void CoinSystem::update(const Player *player, float delta) {
 void CoinSystem::addCoin(cocos2d::Vec2 point) {
 
     int i = CCRANDOM_0_1() * 10;if(i==0)i++;
-    Coin *coin = Coin::create("Coin/frame-"+std::to_string(i)+".png");
+    Coin *coin = Coin::create("Coin/frame-"+TO_STRING(i)+".png");
     coin->setPosition(point);
     coin->setType(Coin::CoinType::SMALL_VALUE_COIN);
     auto animation = Animation::create();
     for(int k=1; k<=10; k++){
-        animation->addSpriteFrameWithFile("Coin/frame-" + std::to_string(i) + ".png");
+        animation->addSpriteFrameWithFile("Coin/frame-" + TO_STRING(i) + ".png");
         i++;if(i == 11)i=1;
     }
     animation->setLoops(-1);

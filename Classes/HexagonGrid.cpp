@@ -68,7 +68,7 @@ bool HexagonGrid::init(GameWorld * world,float hexaWidth) {
             hexagons[i][j].center = Vec2(j*hexaWidth,i*hexaHeight)+initOffset;
 
             // Visual shit.. please donot disturb
-            CCLOG("Hexawidth = %f, HexaHeight = %fdd",hexaWidth, hexaHeight);
+//            CCLOG("Hexawidth = %f, HexaHeight = %fdd",hexaWidth, hexaHeight);
             auto sp = Sprite::create("AssetSet1/hexog.png");
 //            sp->setBlendFunc(BlendFunc::ADDITIVE);
             auto ov = Sprite::create("AssetSet1/hexop.png");
@@ -115,19 +115,58 @@ bool HexagonGrid::init(GameWorld * world,float hexaWidth) {
     indices = generatePath(startIndex.second,startIndex.first,pathLength);
 
     //LaserNode
-    {
-        //TODO speed based on player displacement delta
-        laser = LaserSystem::create(player,[this]{
-            laser = nullptr;
-        },20,4,4.0f);
-        addChild(laser);
+//    {
+//        //TODO speed based on player displacement delta
+//        laser = LaserSystem::create(player,[this]{
+//            laser = nullptr;
+//        },20,4,4.0f);
+//        addChild(laser);
+//
+//
+//
+//    }
 
 
 
-    }
+    schedule(schedule_selector(HexagonGrid::laserMaker),firstOff+rand_0_1()*timeRange);
 
 
     return true;
+}
+
+
+void HexagonGrid::laserMaker(float delta) {
+
+
+
+    if(laser != nullptr){
+        laser->removeFromParent();
+        laser = nullptr;
+    }
+
+    float runningTime = 4+pow(1.01,laserCount);
+    laser = LaserSystem::create(player,[this]{
+        laser = nullptr;
+    },20,runningTime,4.0f+laserCount*0.05f);
+
+
+
+
+
+    addChild(laser);
+    laser->setPosition(player->getPosition().x,player->getPosition().y-backOff);
+
+
+
+
+
+    laserCount++;
+    schedule(schedule_selector(HexagonGrid::laserMaker),runningTime+firstOff+rand_0_1()*timeRange);
+
+
+
+
+
 }
 
 
@@ -135,28 +174,19 @@ void HexagonGrid::Restart() {
 
 
     world->unscheduleUpdate();
+
+
+
+    unschedule(schedule_selector(HexagonGrid::laserMaker));
+
+
 //    cocos2d::log("unscheduled");
     //reset stuff here
 
 //    filterMultiply->setPosition(filterMultiply->getContentSize().width/2, filterMultiply->getContentSize().height/2);
     coinSystem->clearCoins();
     player->setRandomColor();
-    this->scheduleOnce([this](float delta){
-        {
-            if(laser!= nullptr)
-                laser->removeFromParent();
 
-            laser = LaserSystem::create(player,[this]{
-                laser = nullptr;
-            },20,4,4.0f);
-            addChild(laser);
-
-
-        }
-        world->scheduleUpdate();
-
-//        cocos2d::log("rescheduled");
-    },2.0f,"GameResumer");
 
 
     setPosition(Vec2::ZERO);
@@ -194,6 +224,7 @@ void HexagonGrid::Restart() {
     }
 
 
+
     if(laser!= nullptr){
         laser->removeFromParent();
         laser = nullptr;
@@ -205,6 +236,21 @@ void HexagonGrid::Restart() {
         pathDirty = true;
 
     }
+
+    //get the game rolling again
+    this->scheduleOnce([this](float delta){
+
+        //make the game roll again
+        world->scheduleUpdate();
+        schedule(schedule_selector(HexagonGrid::laserMaker),firstOff+rand_0_1()*timeRange);
+
+
+
+
+//        cocos2d::log("rescheduled");
+    },2.0f,"GameResumer");
+
+
 
 }
 
@@ -269,7 +315,7 @@ void HexagonGrid::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transfo
 
     dynamicDrawer->clear();
     auto pRect = player->getCollisionRect();
-    dynamicDrawer->drawPoly(&pRect[0],pRect.size(),true,Color4F::BLUE);
+    dynamicDrawer->drawPoly(&pRect[0],(int)pRect.size(),true,Color4F::BLUE);
 
 
 

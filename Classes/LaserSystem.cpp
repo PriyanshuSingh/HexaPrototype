@@ -83,7 +83,8 @@ void LaserSystem::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags
 void LaserSystem::move(){
 
 
-    setPositionY(getPositionY()+speed);
+    setPositionY(getPositionY()+std::min(speed,1.1f*abs(player->getDisplacement().y)));
+
 
 }
 
