@@ -70,6 +70,7 @@ bool HexagonGrid::init(GameWorld * world,float hexaWidth) {
             // Visual shit.. please donot disturb
             CCLOG("Hexawidth = %f, HexaHeight = %fdd",hexaWidth, hexaHeight);
             auto sp = Sprite::create("AssetSet1/hexog.png");
+//            sp->setBlendFunc(BlendFunc::ADDITIVE);
             auto ov = Sprite::create("AssetSet1/hexop.png");
             ov->setPosition(sp->getContentSize().width/2, sp->getContentSize().height/2);
             sp->addChild(ov);
@@ -91,6 +92,12 @@ bool HexagonGrid::init(GameWorld * world,float hexaWidth) {
 
         }
     }
+
+    filterMultiply = Sprite::create("AssetSet1/filter2.png");
+    BlendFunc a = {GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA};
+    filterMultiply->setBlendFunc(a);
+    filterMultiply->setPosition(filterMultiply->getContentSize().width/2, filterMultiply->getContentSize().height/2);
+    addChild(filterMultiply);
     // CoinSystem
     {
         coinSystem = CoinSystem::create();
@@ -131,6 +138,7 @@ void HexagonGrid::Restart() {
 //    cocos2d::log("unscheduled");
     //reset stuff here
 
+    filterMultiply->setPosition(filterMultiply->getContentSize().width/2, filterMultiply->getContentSize().height/2);
     coinSystem->clearCoins();
     this->scheduleOnce([this](float delta){
         {
@@ -286,7 +294,7 @@ void HexagonGrid::update(float delta) {
 
     setPosition(getPosition() - player->getDisplacement());
     backGround->setPosition(backGround->getPosition()+paraFactor*player->getDisplacement());
-
+//    filterMultiply->setPosition(filterMultiply->getPosition()+ player->getDisplacement());
     player->setPosition(player->getNextPosition());
 
 }

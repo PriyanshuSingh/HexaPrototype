@@ -141,6 +141,7 @@ private:
     IndexPair startIndex = std::make_pair(2,2);
     bool pathDirty = true;
     LaserSystem *laser = nullptr;
+    cocos2d::Sprite *filterMultiply;
 };
 
 
