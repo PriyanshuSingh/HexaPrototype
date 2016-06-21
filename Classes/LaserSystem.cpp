@@ -2,7 +2,7 @@
 // Created by ashish on 6/21/16.
 //
 
-#include "LaserNode.hpp"
+#include "LaserSystem.hpp"
 #include "Player.hpp"
 USING_NS_CC;
 
@@ -36,7 +36,7 @@ bool LaserSystem::init(Player * player,const std::function<void()> & parentCallB
     addChild(laserDrawer);
 
 
-
+//TODO replace update with schedule once
     scheduleUpdate();
     return true;
 
@@ -48,6 +48,7 @@ void LaserSystem::update(float delta) {
 
     if(timer <= duration){
 
+        move();
         timer+=delta;
     }
     else{
@@ -81,27 +82,29 @@ void LaserSystem::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags
 }
 void LaserSystem::move(){
 
+
     setPositionY(getPositionY()+speed);
+
 }
 
 bool LaserSystem::collided() {
 
 
+    if(player!= nullptr) {
+        auto vec = player->getCollisionRect();
+        auto &width = _director->getWinSize().width;
+        auto first = laserDrawer->convertToNodeSpace(Vec2::ZERO);
+        auto second = laserDrawer->convertToNodeSpace(Vec2(width, 0));
+        std::vector<Vec2> points;
+        Rect colRect(first.x, 0, second.x - first.x, height);
 
+        for (auto &p:vec) {
 
-    auto vec = player->getCollisionRect();
-    auto & width = _director->getWinSize().width;
-    auto first  = laserDrawer->convertToNodeSpace(Vec2::ZERO);
-    auto second = laserDrawer->convertToNodeSpace(Vec2(width,0));
-    std::vector<Vec2> points;
-    Rect colRect(first.x,0,second.x-first.x,height);
+            p = laserDrawer->convertToNodeSpace(_parent->convertToWorldSpace(p));
+            if (colRect.containsPoint(p))
+                return true;
 
-    for(auto & p:vec){
-
-        p = laserDrawer->convertToNodeSpace(_parent->convertToWorldSpace(p));
-        if(colRect.containsPoint(p))
-            return true;
-
+        }
     }
     return false;
 }

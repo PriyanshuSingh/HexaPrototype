@@ -5,7 +5,7 @@
 #include "HexagonGrid.hpp"
 #include "Player.hpp"
 #include "GameWorld.hpp"
-#include "LaserNode.hpp"
+#include "LaserSystem.hpp"
 
 USING_NS_CC;
 
@@ -99,7 +99,7 @@ bool HexagonGrid::init(GameWorld * world,float hexaWidth) {
         //TODO speed based on player displacement delta
         laser = LaserSystem::create(player,[this]{
             laser = nullptr;
-        },20,2<<6,4.2f);
+        },20,4,4.0f);
         addChild(laser);
 
 
@@ -120,7 +120,19 @@ void HexagonGrid::Restart() {
 
     coinSystem->clearCoins();
     this->scheduleOnce([this](float delta){
+        {
+            if(laser!= nullptr)
+                laser->removeFromParent();
+
+            laser = LaserSystem::create(player,[this]{
+                laser = nullptr;
+            },20,4,4.0f);
+            addChild(laser);
+
+
+        }
         world->scheduleUpdate();
+
 //        cocos2d::log("rescheduled");
     },2.0f,"GameResumer");
 
@@ -160,12 +172,12 @@ void HexagonGrid::Restart() {
     }
 
 
-
-    {
-        if(laser!= nullptr)
-            laser->setPosition(Vec2::ZERO);
-
+    if(laser!= nullptr){
+        laser->removeFromParent();
+        laser = nullptr;
     }
+
+
     setPosition(Vec2::ZERO);
     {
         pathDirty = true;
@@ -250,8 +262,6 @@ void HexagonGrid::update(float delta) {
         player->setVisible(false);
         Restart();
         return;
-//        cocos2d::log("stop game");
-//        return;
     }
     else{
 
@@ -263,9 +273,7 @@ void HexagonGrid::update(float delta) {
 
     setPosition(getPosition() - player->getDisplacement());
     backGround->setPosition(backGround->getPosition()+paraFactor*player->getDisplacement());
-    if(laser!= nullptr){
-        laser->move();
-    }
+
     player->setPosition(player->getNextPosition());
 
 }

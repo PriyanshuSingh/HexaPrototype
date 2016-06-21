@@ -128,7 +128,7 @@ set(GAME_SRC
   Classes/Player.cpp
   Classes/HexagonGrid.cpp
   Classes/CoinSystem.cpp
-  Classes/LaserNode.cpp
+  Classes/LaserSystem.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
 
@@ -138,7 +138,7 @@ set(GAME_HEADERS
   Classes/Player.hpp
   Classes/HexagonGrid.hpp
   Classes/CoinSystem.hpp
-  Classes/LaserNode.hpp
+  Classes/LaserSystem.hpp
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 

@@ -34,7 +34,8 @@ Use ExtraPolation maybe between two frames?
 
 
 Release:
-Invert Controls
+Invert Controls Option
+Multi Language Support
 =======
 Use Extrapolation maybe between two frames?
 

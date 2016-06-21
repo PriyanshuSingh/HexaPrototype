@@ -1,7 +1,5 @@
 #include "GameWorld.hpp"
 #include "HexagonGrid.hpp"
-#include "CoinSystem.hpp"
-
 USING_NS_CC;
 
 Scene* GameWorld::createScene()
@@ -74,6 +72,7 @@ bool GameWorld::init()
         menu->setPosition(Vec2::ZERO);
         this->addChild(menu, 1);
     }
+
 
 
 
