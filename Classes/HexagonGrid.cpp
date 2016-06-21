@@ -66,7 +66,19 @@ bool HexagonGrid::init(GameWorld * world,float hexaWidth) {
         Vec2 initOffset = (i&1)?Vec2(-hexaWidth/2,0):Vec2::ZERO;
         for(size_t j = 0;j< hexagons.at(i).size();++j){
             hexagons[i][j].center = Vec2(j*hexaWidth,i*hexaHeight)+initOffset;
-            auto sp = Sprite::create("hexaScaled.png");
+
+            // Visual shit.. please donot disturb
+            CCLOG("Hexawidth = %f, HexaHeight = %fdd",hexaWidth, hexaHeight);
+            auto sp = Sprite::create("AssetSet1/hexog.png");
+            auto ov = Sprite::create("AssetSet1/hexop.png");
+            ov->setPosition(sp->getContentSize().width/2, sp->getContentSize().height/2);
+            sp->addChild(ov);
+//            auto xx = Sprite::create("AssetSet1/bloack_03.png");
+//            xx->setPosition(sp->getContentSize().width/2, sp->getContentSize().height);
+//            sp->addChild(xx,1);
+            sp->setScale(hexaWidth/sp->getContentSize().width );
+            // Visual shit.. end here continue logic
+
             addChild(sp);
 
             sp->setPosition(hexagons[i][j].center);
@@ -75,6 +87,7 @@ bool HexagonGrid::init(GameWorld * world,float hexaWidth) {
             hexagons[i][j].exitEdge  = Hex::FreeEdge::Invalid;
             hexagons[i][j].index = std::make_pair(i,j);
             hexagons[i][j].width = hexaWidth;
+
 
         }
     }

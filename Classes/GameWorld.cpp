@@ -52,7 +52,7 @@ bool GameWorld::init()
 //    coinSystem = CoinSystem::create();
 //    addChild(coinSystem);
 
-    grid = HexagonGrid::create(this,180,20,30);
+    grid = HexagonGrid::create(this,180,100,100);
     addChild(grid);
 //    grid->setPosition(winSize/3);
     //score Label
