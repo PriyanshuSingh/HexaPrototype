@@ -140,6 +140,7 @@ void HexagonGrid::Restart() {
 
 //    filterMultiply->setPosition(filterMultiply->getContentSize().width/2, filterMultiply->getContentSize().height/2);
     coinSystem->clearCoins();
+    player->setRandomColor();
     this->scheduleOnce([this](float delta){
         {
             if(laser!= nullptr)

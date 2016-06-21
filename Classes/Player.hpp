@@ -43,6 +43,8 @@ public:
 
     void setCollided(bool val);
 
+    void setRandomColor();
+
 private:
 
     cocos2d::Sprite * displaySprite = nullptr;
@@ -53,7 +55,7 @@ private:
         float displacementDelta = 4;
         float maxRotation = 180*100;
         //can increase or decrease this factor
-        float boxFactor = 0.3;
+        float boxFactor = 0.2;
 
 
     };
@@ -115,7 +117,6 @@ private:
     void enablePowerUp(const Power & power);
     void disablePowerUp(const Power & power);
     bool powerBool[TotalPowerUps];
-
 
 
 };

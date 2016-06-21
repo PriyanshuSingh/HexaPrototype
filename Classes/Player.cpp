@@ -104,23 +104,23 @@ bool Player::init() {
 
 
 //    displaySprite = Sprite::create("Triangle.png");
-    displaySprite = Sprite::create("AssetSet1/plane/plane0001.png");
+    displaySprite = Sprite::create("AssetSet1/plane1/plane0001.png");
     displaySprite->setScale(0.40f);
     //setting Animation
     auto animation = Animation::create();
-    for(int i=1; i<10; i++)animation->addSpriteFrameWithFile("AssetSet1/plane/plane000"+std::to_string(i)+".png");
-    animation->addSpriteFrameWithFile("AssetSet1/plane/plane0010.png");
+    for(int i=1; i<10; i++)animation->addSpriteFrameWithFile("AssetSet1/plane1/plane000"+std::to_string(i)+".png");
+    animation->addSpriteFrameWithFile("AssetSet1/plane1/plane0010.png");
     animation->setLoops(-1);
-    animation->setDelayPerUnit(1.0f/18.0f);
+    animation->setDelayPerUnit(1.0f/30.0f);
     displaySprite->runAction(Animate::create(animation));
     //
+    setRandomColor();
     addChild(displaySprite, 100);
     auto filterSprite = Sprite::create("AssetSet1/filter1.png");
     filterSprite->setBlendFunc(BlendFunc::ALPHA_PREMULTIPLIED);
     addChild(filterSprite);
     return true;
 }
-
 
 void Player::update(float delta) {
 
@@ -224,3 +224,7 @@ void Player::disablePowerUp(const Player::Power &power) {
 }
 
 
+void Player::setRandomColor() {
+    std::vector<Color3B> col = {Color3B(241,164,40), Color3B(253,190,0), Color3B::RED, Color3B::GRAY};
+    displaySprite->setColor(col[rand()%col.size()]);
+}
