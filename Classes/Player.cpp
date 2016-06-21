@@ -118,9 +118,9 @@ bool Player::init() {
     //
     setRandomColor();
     addChild(displaySprite, 100);
-//    auto filterSprite = Sprite::create("AssetSet1/filter1.png");
-//    filterSprite->setBlendFunc(BlendFunc::ALPHA_PREMULTIPLIED);
-//    addChild(filterSprite);
+    auto filterSprite = Sprite::create("AssetSet1/filter1.png");
+    filterSprite->setBlendFunc(BlendFunc::ALPHA_PREMULTIPLIED);
+    addChild(filterSprite);
     return true;
 }
 
