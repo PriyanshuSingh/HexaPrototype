@@ -137,7 +137,7 @@ private:
 
     void Restart();
     GameWorld * world = nullptr;
-    int pathLength = 80;
+    int pathLength = 15;
     IndexPair startIndex = std::make_pair(2,2);
     bool pathDirty = true;
     cocos2d::Sprite *filterMultiply;
